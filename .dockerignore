@@ -1,0 +1,15 @@
+node_modules
+.env
+.wwebjs_auth
+.wwebjs_cache
+downloads
+*.zip
+*.md
+.git
+.github
+replit.nix
+Dockerfile
+.dockerignore
+implementation_plan.md
+task.md
+walkthrough.md
