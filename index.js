@@ -72,9 +72,16 @@ const client = new Client({
         headless: true,
         // Using environment variable from Dockerfile or common Linux paths
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || (process.platform === 'linux' ? '/usr/bin/chromium' : undefined),
-        args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu']
+        args: [
+            '--no-sandbox', 
+            '--disable-setuid-sandbox', 
+            '--disable-gpu', 
+            '--disable-dev-shm-usage', 
+            '--no-zygote'
+        ]
     }
 });
+
 
 
 client.on('qr', (qr) => {

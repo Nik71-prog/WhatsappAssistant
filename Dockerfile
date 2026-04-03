@@ -1,7 +1,8 @@
-FROM node:20-slim
+# Use Node 20 on Debian Bookworm (Stable)
+FROM node:20-bookworm-slim
 
 # Install system dependencies for Puppeteer and Chromium
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y --no-install-recommends \
     chromium \
     fonts-liberation \
     libappindicator3-1 \
@@ -20,7 +21,7 @@ RUN apt-get update && apt-get install -y \
     libxdamage1 \
     libxrandr2 \
     xdg-utils \
-    --no-install-recommends \
+    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Set Puppeteer environment variables
@@ -29,17 +30,17 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 WORKDIR /app
 
-# Copy package files
+# Copy package files separately for better caching
 COPY package*.json ./
 
-# Install dependencies
+# Install production dependencies
 RUN npm install --omit=dev
 
 # Copy the rest of the application
 COPY . .
 
-# Expose the health check port (Back4app requirement)
+# Expose the health check port
 EXPOSE 8080
 
-# Start the application
-CMD ["node", "index.js"]
+# Start the application using npm start
+CMD ["npm", "start"]

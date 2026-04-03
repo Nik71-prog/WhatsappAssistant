@@ -8,8 +8,6 @@ downloads
 .git
 .github
 replit.nix
-Dockerfile
-.dockerignore
 implementation_plan.md
 task.md
 walkthrough.md
