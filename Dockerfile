@@ -1,4 +1,4 @@
-﻿# Use the full Node 20 image (Debian Bookworm)
+# Use the full Node 20 image (Debian Bookworm)
 FROM node:20
 
 # Install system dependencies for Puppeteer and Chromium

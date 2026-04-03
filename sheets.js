@@ -1,4 +1,4 @@
-﻿require('dotenv').config();
+require('dotenv').config();
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const { JWT } = require('google-auth-library');
 const fs = require('fs');
