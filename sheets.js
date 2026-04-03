@@ -4,13 +4,27 @@ const { JWT } = require('google-auth-library');
 const fs = require('fs');
 
 // Caricamento credenziali
-const creds = JSON.parse(fs.readFileSync('./service_account.json'));
+let creds;
+if (process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
+    try {
+        creds = JSON.parse(process.env.GOOGLE_SERVICE_ACCOUNT_JSON);
+    } catch (err) {
+        console.error('[SHEETS] Errore nel parsing della variabile GOOGLE_SERVICE_ACCOUNT_JSON:', err.message);
+        process.exit(1);
+    }
+} else if (fs.existsSync('./service_account.json')) {
+    creds = JSON.parse(fs.readFileSync('./service_account.json'));
+} else {
+    console.error('[SHEETS] Errore: Credenziali Google non trovate (né ENV né file).');
+    process.exit(1);
+}
 
 const serviceAccountAuth = new JWT({
     email: creds.client_email,
     key: creds.private_key,
     scopes: ['https://www.googleapis.com/auth/spreadsheets'],
 });
+
 
 const doc = new GoogleSpreadsheet(process.env.SPREADSHEET_ID, serviceAccountAuth);
 

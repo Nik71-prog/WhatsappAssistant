@@ -8,8 +8,18 @@ const http = require('http'); // Aggiunto per Keep-Alive (Replit)
 require('dotenv').config();
 
 // Configurazione
-const GROUP_NAME = 'TestBotJS'; 
+const GROUP_NAME = process.env.GROUP_NAME || 'TestBotJS';
+const PORT = process.env.PORT || 8080;
 const DOWNLOAD_DIR = path.resolve(__dirname, 'downloads');
+
+// Validazione Variabili d'Ambiente
+const REQUIRED_ENV = ['SPREADSHEET_ID', 'SHEET_NAME'];
+const missingEnv = REQUIRED_ENV.filter(key => !process.env[key]);
+if (missingEnv.length > 0) {
+    console.error(`[ERRORE] Variabili d'ambiente mancanti: ${missingEnv.join(', ')}`);
+    console.error('Assicurati di averle configurate nel file .env o nel pannello di controllo dell\'host.');
+    process.exit(1);
+}
 
 // Assicura che la cartella download esista
 if (!fs.existsSync(DOWNLOAD_DIR)) {
@@ -106,8 +116,11 @@ client.on('message', async (msg) => {
 console.log('Inizializzazione bot...');
 client.initialize();
 
-// Mini server per Keep-Alive (Necessario per Replit)
+// Mini server per Keep-Alive (Necessario per Back4app Health Check)
 http.createServer((req, res) => {
     res.write('Bot is running!');
     res.end();
-}).listen(8080);
+}).listen(PORT, () => {
+    console.log(`[SERVER] Health check in ascolto sulla porta ${PORT}`);
+});
+
