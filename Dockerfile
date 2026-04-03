@@ -1,8 +1,7 @@
 # Use the full Node 20 image (Debian Bookworm)
-# This is heavier but includes many pre-installed dependencies for Chromium
 FROM node:20
 
-# Install minimal extra system dependencies for Chromium
+# Install system dependencies for Puppeteer and Chromium
 RUN apt-get update && apt-get install -y --no-install-recommends \
     chromium \
     fonts-liberation \
@@ -31,10 +30,10 @@ ENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 
 WORKDIR /app
 
-# Copy package files (caching layer)
-COPY package*.json ./
+# Copy package file separately
+COPY package.json ./
 
-# Install dependencies
+# Install dependencies (generating a fresh lock file in the container)
 RUN npm install --omit=dev
 
 # Copy the rest of the application
@@ -43,5 +42,5 @@ COPY . .
 # Expose the health check port
 EXPOSE 8080
 
-# Start the application using the start script
+# Start the application
 CMD ["npm", "start"]
