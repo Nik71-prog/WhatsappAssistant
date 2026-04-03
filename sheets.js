@@ -1,4 +1,4 @@
-require('dotenv').config();
+﻿require('dotenv').config();
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const { JWT } = require('google-auth-library');
 const fs = require('fs');
@@ -15,7 +15,7 @@ if (process.env.GOOGLE_SERVICE_ACCOUNT_JSON) {
 } else if (fs.existsSync('./service_account.json')) {
     creds = JSON.parse(fs.readFileSync('./service_account.json'));
 } else {
-    console.error('[SHEETS] Errore: Credenziali Google non trovate (né ENV né file).');
+    console.error('[SHEETS] Errore: Credenziali Google non trovate (nÃ© ENV nÃ© file).');
     process.exit(1);
 }
 
@@ -48,7 +48,7 @@ async function findRmaInSheet(rmaCode) {
 
         // Cerchiamo la riga che contiene il codice RMA nella colonna E (indice 4)
         for (const row of rows) {
-            // Usiamo _rawData per compatibilità con l'approccio ad indici del Python
+            // Usiamo _rawData per compatibilitÃ  con l'approccio ad indici del Python
             const rowValues = row._rawData;
             const rmaInRow = rowValues[4] || "";
 
